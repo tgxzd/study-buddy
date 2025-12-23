@@ -1,22 +1,49 @@
-FROM node:20-alpine AS development-dependencies-env
-COPY . /app
-WORKDIR /app
-RUN npm ci
+# Build stage
+FROM node:20-alpine AS builder
 
-FROM node:20-alpine AS production-dependencies-env
-COPY ./package.json package-lock.json /app/
 WORKDIR /app
-RUN npm ci --omit=dev
 
-FROM node:20-alpine AS build-env
-COPY . /app/
-COPY --from=development-dependencies-env /app/node_modules /app/node_modules
-WORKDIR /app
-RUN npm run build
+# Copy package files
+COPY package.json yarn.lock ./
 
-FROM node:20-alpine
-COPY ./package.json package-lock.json /app/
-COPY --from=production-dependencies-env /app/node_modules /app/node_modules
-COPY --from=build-env /app/build /app/build
+# Install dependencies
+RUN yarn install
+
+# Copy source code
+COPY . .
+
+# Build the app
+RUN yarn build
+
+# Production stage
+FROM node:20-alpine AS runner
+
 WORKDIR /app
-CMD ["npm", "run", "start"]
+
+# Install dependencies for runtime
+RUN apk add --no-cache openssl
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 remix
+
+# Copy necessary files
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/yarn.lock ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/app ./app
+
+# Set permissions
+RUN chown -R remix:nodejs /app
+
+USER remix
+
+EXPOSE 3000
+
+ENV NODE_ENV=production
+
+# Run db push (creates tables from schema), generate Prisma client, then start server
+CMD ["sh", "-c", "yarn prisma db push --skip-generate && yarn prisma generate && yarn start"]

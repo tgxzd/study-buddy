@@ -70,16 +70,38 @@
 
 ### API Endpoints
 - [x] POST /groups (join by code) - Creates join request instead of direct join
-- [x] POST /groups.requests (intent: create) - Create join request
-- [x] POST /groups.requests (intent: accept) - Accept request, add user to group
-- [x] POST /groups.requests (intent: reject) - Reject request
-- [x] POST /groups.requests (intent: cancel) - User cancels their pending request
-- [x] GET /groups.requests?groupId=xxx - Get pending requests (owner only)
+- [x] POST /groups/:id (intent: accept/reject) - Accept/Reject requests
+- [x] POST /groups/:id (intent: request-join) - Request to join
+- [x] POST /groups/:id (intent: cancel-request) - Cancel pending request
 
 ### Files Created
 - [x] `app/server/services/joinRequestService.ts` - Join request operations
-- [x] `app/routes/groups.requests.tsx` - API endpoint for join requests
 - [x] Prisma schema updated with GroupJoinRequest model and JoinRequestStatus enum
+
+---
+
+## 🐳 Phase 7: Deployment (In Progress - Docker & CI/CD)
+
+### Docker Setup (Completed)
+- [x] Dockerfile (multi-stage build with Node 20 Alpine)
+- [x] docker-compose.yml (with PostgreSQL)
+- [x] .dockerignore (optimized for smaller images)
+- [x] Non-root user configuration for security
+- [x] Health check for PostgreSQL
+
+### CI/CD (Completed)
+- [x] GitHub Actions CI workflow (lint, typecheck, build)
+- [x] GitHub Actions Docker workflow (build & push to GHCR)
+
+### Git Workflow (Completed)
+- [x] Branching strategy defined
+- [x] CI/CD pipelines configured
+- [x] Automated testing on PRs
+
+### AWS Deployment (On Hold)
+- [ ] EC2 deployment
+- [ ] S3 bucket creation for file storage
+- [ ] Environment configurations for production
 
 ---
 
@@ -169,16 +191,6 @@
 
 ---
 
-## 🚀 Phase 7: Deployment (Optional)
-
-- [ ] Docker setup
-- [ ] AWS S3 bucket creation
-- [ ] EC2 deployment
-- [ ] CI/CD pipeline
-- [ ] Environment configurations
-
----
-
 ## Progress Summary
 
 | Phase | Status |
@@ -190,7 +202,8 @@
 | Study Sessions | ⏳ Pending |
 | Real-time Chat | ⏳ Pending |
 | Security & Polish | ⏳ Partial |
-| Deployment | ⏳ Pending |
+| Docker & CI/CD | ✅ Completed |
+| AWS Deployment | ⏸️ On Hold |
 
 ---
 
@@ -222,8 +235,14 @@
 
 ### Phase 2.5 (Join Request System)
 - `app/server/services/joinRequestService.ts` - Join request CRUD operations
-- `app/routes/groups.requests.tsx` - API endpoint for join requests
 - `prisma/schema.prisma` - Added GroupJoinRequest model and JoinRequestStatus enum
+
+### Phase 7 (Docker & CI/CD)
+- `Dockerfile` - Multi-stage build for production
+- `docker-compose.yml` - Local development with PostgreSQL
+- `.dockerignore` - Optimized Docker build context
+- `.github/workflows/ci.yml` - Lint, typecheck, and build pipeline
+- `.github/workflows/docker.yml` - Docker build and push to GHCR
 
 ---
 
@@ -255,3 +274,6 @@
 - **Backend**: React Router v7 Server Mode (not Express)
 - **Database**: PostgreSQL with Prisma ORM
 - **Auth**: JWT with HTTP-only cookies
+- **Package Manager**: Yarn (not npm)
+- **Container**: Docker with multi-stage builds
+- **CI/CD**: GitHub Actions

@@ -9,7 +9,9 @@
       "Bash(yarn typecheck)",
       "Bash(cat:*)",
       "Bash(npx react-router typegen:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(yarn prisma migrate dev:*)",
+      "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"yes\" yarn prisma migrate:*)"
     ]
   }
 }
