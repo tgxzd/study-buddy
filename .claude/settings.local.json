@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn install:*)",
+      "Bash(yarn prisma:generate:*)",
+      "Bash(yarn prisma:migrate:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(psql:*)",
+      "Bash(yarn typecheck)",
+      "Bash(cat:*)"
+    ]
+  }
+}
