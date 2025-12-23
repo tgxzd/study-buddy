@@ -20,8 +20,9 @@ model User {
   updatedAt    DateTime @updatedAt
 
   // Relations
-  ownedGroups  StudyGroup[]       @relation("GroupOwner")
+  ownedGroups  StudyGroup[]        @relation("GroupOwner")
   memberships  GroupMember[]
+  joinRequests GroupJoinRequest[]
   uploadedFiles File[]
   chatMessages ChatMessage[]
 
@@ -44,6 +45,7 @@ model StudyGroup {
   // Relations
   owner       User            @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   members     GroupMember[]
+  joinRequests GroupJoinRequest[]
   files       File[]
   sessions    StudySession[]
   chatMessages ChatMessage[]
@@ -63,6 +65,28 @@ model GroupMember {
 
   @@unique([userId, groupId])
   @@map("group_members")
+}
+
+model GroupJoinRequest {
+  id        String           @id @default(uuid())
+  userId    String
+  groupId   String
+  status    JoinRequestStatus @default(PENDING)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  // Relations
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group     StudyGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@map("group_join_requests")
+}
+
+enum JoinRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
 }
 
 model File {

@@ -1,5 +1,5 @@
 const COOKIE_NAME = "auth_token";
-const COOKIE_MAX_AGE = 15 * 60; // 15 minutes in seconds
+const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days in seconds
 
 export interface CookieOptions {
   httpOnly: boolean;

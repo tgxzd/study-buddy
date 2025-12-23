@@ -1,7 +1,7 @@
 import { useLoaderData, redirect, Link } from "react-router";
 import { Button } from "../components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/Card";
-import { Users, FileText, Calendar, LogOut, User } from "lucide-react";
+import { Users, User } from "lucide-react";
 import type { Route } from "./+types/dashboard";
 import { verifyToken } from "../server/config/jwt.js";
 import { prisma } from "../server/config/database.js";
@@ -66,105 +66,61 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-background-50">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-semibold text-background-900">
-              Welcome, {user.name}
-            </h1>
-            <p className="text-background-600 text-sm">Manage your study groups and collaboration</p>
-          </div>
-          <Link to="/auth/logout">
-            <Button variant="outline" size="sm">
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </Link>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-primary-100">
-                  <Users className="h-5 w-5 text-primary-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-semibold text-background-900">0</p>
-                  <p className="text-sm text-background-600">Study Groups</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-accent-100">
-                  <FileText className="h-5 w-5 text-accent-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-semibold text-background-900">0</p>
-                  <p className="text-sm text-background-600">Shared Notes</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 rounded-lg bg-success-100">
-                  <Calendar className="h-5 w-5 text-success-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-semibold text-background-900">0</p>
-                  <p className="text-sm text-background-600">Sessions</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-background-900">
+            Welcome back, {user.name || "Student"}!
+          </h1>
+          <p className="text-background-600 text-base mt-1">Manage your study groups and collaboration</p>
         </div>
 
         {/* Get Started */}
-        <Card>
+        <Card className="border-2 border-background-200 bg-white shadow-sm mb-8">
           <CardHeader>
-            <CardTitle>Get Started</CardTitle>
+            <CardTitle className="text-xl font-bold">Get Started</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-background-600 mb-6">
-              Create your first study group or join an existing one to start collaborating.
+            <p className="text-background-700 mb-6 text-base">
+              Create your first study group or join an existing one to start collaborating with classmates.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button>Create Study Group</Button>
-              <Button variant="secondary">Browse Groups</Button>
+              <Link to="/groups/create">
+                <Button size="md">
+                  <Users className="h-4 w-4 mr-2" />
+                  Create Study Group
+                </Button>
+              </Link>
+              <Link to="/groups">
+                <Button variant="outline" size="md">
+                  Browse Groups
+                </Button>
+              </Link>
             </div>
           </CardContent>
         </Card>
 
         {/* Profile */}
-        <Card className="mt-6">
+        <Card className="border-2 border-background-200 bg-white shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="h-5 w-5" />
+            <CardTitle className="flex items-center gap-2 text-lg font-bold">
+              <User className="h-5 w-5 text-primary-600" />
               Profile
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-base">
               <div>
-                <p className="text-background-600">Name</p>
-                <p className="font-medium text-background-900">{user.name}</p>
+                <p className="text-background-600 mb-1">Name</p>
+                <p className="font-semibold text-background-900">{user.name || "Not set"}</p>
               </div>
               <div>
-                <p className="text-background-600">Email</p>
-                <p className="font-medium text-background-900">{user.email}</p>
+                <p className="text-background-600 mb-1">Email</p>
+                <p className="font-semibold text-background-900">{user.email}</p>
               </div>
               <div>
-                <p className="text-background-600">Role</p>
-                <p className="font-medium text-background-900 capitalize">{user.role.toLowerCase()}</p>
+                <p className="text-background-600 mb-1">Role</p>
+                <p className="font-semibold text-background-900 capitalize">{user.role.toLowerCase()}</p>
               </div>
             </div>
           </CardContent>

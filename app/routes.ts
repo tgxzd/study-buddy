@@ -7,5 +7,8 @@ export default [
     route("auth/register", "routes/auth/register.tsx"),
     route("auth/logout", "routes/auth/logout.tsx"),
     route("dashboard", "routes/dashboard.tsx"),
+    route("groups", "routes/groups.tsx"),
+    route("groups/create", "routes/groups.create.tsx"),
+    route("groups/:id", "routes/groups.$id.tsx"),
   ]),
 ] satisfies RouteConfig;

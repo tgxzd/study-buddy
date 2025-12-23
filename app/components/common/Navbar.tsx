@@ -1,31 +1,91 @@
 import { Link } from "react-router";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Users, LogOut, LayoutDashboard } from "lucide-react";
 
-export function Navbar() {
+interface NavbarProps {
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+  } | null;
+}
+
+export function Navbar({ user }: NavbarProps) {
   return (
-    <nav className="border-b border-background-200 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="p-1.5 rounded-lg bg-primary-600">
-              <BookOpen className="w-5 h-5 text-white" />
+    <nav
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 9999,
+        height: "64px",
+        backgroundColor: "#1f2937",
+        borderBottom: "2px solid #374151",
+        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.3)",
+        display: "block",
+        visibility: "visible",
+      }}
+    >
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 1rem", height: "100%" }}>
+        <div style={{ display: "flex", height: "100%", alignItems: "center", justifyContent: "space-between" }}>
+          <Link to="/" style={{ display: "flex", alignItems: "center", gap: "0.625rem", textDecoration: "none" }}>
+            <div style={{ padding: "0.5rem", borderRadius: "0.75rem", backgroundColor: "#6B46C1", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.3)" }}>
+              <BookOpen style={{ width: "1.25rem", height: "1.25rem", color: "#ffffff" }} />
             </div>
-            <span className="text-lg font-semibold text-background-900">StudyBuddy</span>
+            <span style={{ fontSize: "1.25rem", fontWeight: 700, color: "#ffffff" }}>StudyBuddy</span>
           </Link>
 
-          <div className="flex items-center gap-3">
-            <Link
-              to="/auth/login"
-              className="text-sm font-medium text-background-700 hover:text-primary-600 px-4 py-2 transition-colors"
-            >
-              Login
-            </Link>
-            <Link
-              to="/auth/register"
-              className="text-sm font-medium bg-primary-600 text-white px-5 py-2 rounded-lg hover:bg-primary-700 transition-colors"
-            >
-              Sign Up
-            </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.25rem" }}>
+            {user ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  style={{ fontSize: "0.875rem", fontWeight: 600, color: "#e5e7eb", padding: "0.625rem 1rem", textDecoration: "none", borderRadius: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", transition: "all 0.2s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#6B46C1"; e.currentTarget.style.color = "#ffffff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#e5e7eb"; }}
+                >
+                  <LayoutDashboard style={{ height: "1rem", width: "1rem" }} />
+                  Dashboard
+                </Link>
+                <Link
+                  to="/groups"
+                  style={{ fontSize: "0.875rem", fontWeight: 600, color: "#e5e7eb", padding: "0.625rem 1rem", textDecoration: "none", borderRadius: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", transition: "all 0.2s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#6B46C1"; e.currentTarget.style.color = "#ffffff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#e5e7eb"; }}
+                >
+                  <Users style={{ height: "1rem", width: "1rem" }} />
+                  Groups
+                </Link>
+                <Link
+                  to="/auth/logout"
+                  style={{ fontSize: "0.875rem", fontWeight: 600, color: "#f87171", padding: "0.625rem 1rem", textDecoration: "none", borderRadius: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", marginLeft: "0.5rem", transition: "all 0.2s", border: "1px solid #dc2626" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#dc2626"; e.currentTarget.style.color = "#ffffff"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "#f87171"; }}
+                >
+                  <LogOut style={{ height: "1rem", width: "1rem" }} />
+                  Logout
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/auth/login"
+                  style={{ fontSize: "0.875rem", fontWeight: 600, color: "#e5e7eb", padding: "0.625rem 1rem", textDecoration: "none", borderRadius: "0.75rem", transition: "all 0.2s", border: "1px solid #4b5563" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#374151"; e.currentTarget.style.borderColor = "#6B46C1"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.borderColor = "#4b5563"; }}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/auth/register"
+                  style={{ fontSize: "0.875rem", fontWeight: 600, backgroundColor: "#6B46C1", color: "#ffffff", padding: "0.625rem 1.25rem", textDecoration: "none", borderRadius: "0.75rem", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.3)", transition: "all 0.2s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#7c3aed"; e.currentTarget.style.boxShadow = "0 10px 15px -3px rgb(0 0 0 / 0.3)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#6B46C1"; e.currentTarget.style.boxShadow = "0 4px 6px -1px rgb(0 0 0 / 0.3)"; }}
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>

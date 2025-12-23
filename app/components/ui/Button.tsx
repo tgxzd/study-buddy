@@ -8,9 +8,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: "bg-primary-600 text-white hover:bg-primary-700 shadow-sm hover:shadow",
-        secondary: "bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50",
-        outline: "border-2 border-background-200 bg-transparent hover:bg-background-50 hover:border-background-300",
-        ghost: "hover:bg-background-100",
+        secondary: "bg-white text-background-900 border-2 border-background-300 hover:bg-background-50",
+        outline: "border-2 border-background-300 bg-white text-background-900 hover:bg-background-100",
+        ghost: "text-background-900 hover:bg-background-100",
+        danger: "bg-error-600 text-white hover:bg-error-700 shadow-sm",
       },
       size: {
         sm: "h-9 px-4 text-sm",
