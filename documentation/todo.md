@@ -80,7 +80,7 @@
 
 ---
 
-## 🐳 Phase 7: Deployment (In Progress - Docker & CI/CD)
+## 🐳 Phase 7: Deployment (Completed)
 
 ### Docker Setup (Completed)
 - [x] Dockerfile (multi-stage build with Node 20 Alpine)
@@ -88,15 +88,26 @@
 - [x] .dockerignore (optimized for smaller images)
 - [x] Non-root user configuration for security
 - [x] Health check for PostgreSQL
+- [x] Prisma migration files created (20251223135056_init)
+- [x] Using `prisma db push` in Docker (reliable for containers)
+- [x] Docker build tested and working locally
 
 ### CI/CD (Completed)
 - [x] GitHub Actions CI workflow (lint, typecheck, build)
 - [x] GitHub Actions Docker workflow (build & push to GHCR)
+- [x] Automated testing on push to main/dev branches
+- [x] Docker image automatically pushed to GitHub Container Registry
 
 ### Git Workflow (Completed)
 - [x] Branching strategy defined
 - [x] CI/CD pipelines configured
 - [x] Automated testing on PRs
+
+### Deployment Notes
+- **Local vs Docker databases**: Separate databases for local dev and Docker
+- **Migration approach**: `prisma db push` for Docker, `prisma migrate dev` for local development
+- **GitHub image**: `ghcr.io/username/repo:latest` - Built automatically on push to main!!!!
+- **Local development**: Use `docker-compose up -d` for local Docker testing
 
 ### AWS Deployment (On Hold)
 - [ ] EC2 deployment
@@ -203,7 +214,7 @@
 | Real-time Chat | ⏳ Pending |
 | Security & Polish | ⏳ Partial |
 | Docker & CI/CD | ✅ Completed |
-| AWS Deployment | ⏸️ On Hold |
+| Prisma Migrations | ✅ Completed |
 
 ---
 
@@ -243,6 +254,7 @@
 - `.dockerignore` - Optimized Docker build context
 - `.github/workflows/ci.yml` - Lint, typecheck, and build pipeline
 - `.github/workflows/docker.yml` - Docker build and push to GHCR
+- `prisma/migrations/20251223135056_init/` - Initial database migration files
 
 ---
 
@@ -277,3 +289,29 @@
 - **Package Manager**: Yarn (not npm)
 - **Container**: Docker with multi-stage builds
 - **CI/CD**: GitHub Actions
+- **Registry**: GitHub Container Registry (GHCR)
+
+### CI/CD Workflow
+- **CI Workflow**: Runs on push to main/dev branches
+  - Lint (ESLint) - continues on error
+  - Type check (TypeScript) - must pass
+  - Build - runs after typecheck passes
+- **Docker Workflow**: Runs on push to main branch
+  - Builds Docker image
+  - Pushes to `ghcr.io/username/repo:latest`
+  - Tags versions for releases (v1.0.0, etc.)
+
+### Docker Commands
+```bash
+# Local development
+docker-compose up -d
+
+# View logs
+docker logs studybuddy-app
+
+# Stop containers
+docker-compose down
+
+# Rebuild after code changes
+docker-compose build --no-cache
+```
